@@ -34,7 +34,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   buttons: {
-    fontSize: 30,
+    fontSize: 20,
     margin: 15,
   },
 });
