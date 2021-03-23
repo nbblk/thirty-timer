@@ -12,6 +12,9 @@ const Start = (props) => {
     second: 60,
     stopped: true,
     finished: false,
+    title: "",
+    streaks: 0,
+    completedSession: 0,
   });
 
   useEffect(() => {
@@ -42,6 +45,16 @@ const Start = (props) => {
         }
       });
     };
+    // state from the new task
+    if (props.location.state) {
+      const task = props.location.state;
+      setTimer({
+        ...timer,
+        title: task.title,
+        streaks: task.streaks,
+        completedSession: task.completedSession,
+      });
+    }
     if (!timer.stopped) {
       intervalId = setInterval(countdown, 1000);
     }
