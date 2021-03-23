@@ -1,14 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { View, Text, StyleSheet } from "react-native";
-import DefaultButton from "../components/DefaultButton";
-
 import { useHistory } from "react-router-native";
 
-const Timer = (props) => (
-  <Text style={styles.timerText}>
-    {props.minute}:{props.second === 60 ? "00" : props.second}
-  </Text>
-);
+import DefaultButton from "../components/DefaultButton";
+import Timer from "../components/Timer";
 
 const Start = (props) => {
   const history = useHistory();
@@ -56,23 +51,28 @@ const Start = (props) => {
   const timerHandler = () => setTimer({ ...timer, stopped: !timer.stopped });
 
   return (
-    <View style={styles.container}>
+    <View style={styles.container} testID="startView">
       {timer.finished ? (
-        <Text style={styles.timerText}>You did it! Let's take a break</Text>
+        <Text style={styles.timerText} testID="finishedText">
+          You did it! Let's take a break
+        </Text>
       ) : (
         <Timer
+          testID="timer"
           minute={timer.minute}
           second={timer.second < 10 ? "0" + timer.second : timer.second}
         />
       )}
       <DefaultButton
+        testID="handleTimerBtn"
         value={timer.stopped ? "Start" : "Pause"}
         press={() => timerHandler()}
-      ></DefaultButton>
+      />
       <DefaultButton
+        testID="giveupBtn"
         value="Give up"
         press={() => history.go(-1)}
-      ></DefaultButton>
+      />
     </View>
   );
 };
@@ -83,9 +83,6 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
-  },
-  timerText: {
-    fontSize: 70,
   },
 });
 

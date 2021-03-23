@@ -29,13 +29,13 @@ const Main = (props) => {
       <Logo />
       <DefaultButton
         value="Start"
-        testId="startButton"
+        testID="startButton"
         press={onStart}
         shared={styles.shared}
       />
       <DefaultButton
         value="Streaks"
-        testId="streakButton"
+        testID="streakButton"
         press={onStreak}
         shared={styles.shared}
       />
