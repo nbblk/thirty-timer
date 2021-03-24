@@ -11,7 +11,7 @@ const Logo = (props) => {
     fontWeight: "800",
   };
   return (
-    <Text style={[style, props.sharedStyle]} testID="logo">
+    <Text style={[style, props.style]} testID="logo">
       Thirty
     </Text>
   );

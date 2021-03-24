@@ -24,6 +24,7 @@ const Streaks = (props) => {
   }, [task]);
 
   const addTaskHandler = () => {
+    console.log("add clicked");
     setTask({ ...task, added: true });
   };
 
@@ -42,10 +43,8 @@ const Streaks = (props) => {
       <TextInput
         style={styles.inputNumber}
         keyboardType="numeric"
-        value={task.streaks}
-        onChangeText={(value) =>
-          setTask({ ...task, streaks: value.replace(/[^A-Za-z]/g, "") })
-        }
+        value={task.streaks.toString()}
+        onChangeText={(value) => setTask({ ...task, streaks: value })}
         placeholder="1-10"
         defaultValue="1"
         textAlign="center"
