@@ -1,16 +1,20 @@
 import React from "react";
 import { TouchableOpacity, StyleSheet } from "react-native";
-import DarkMoon from "./moon-dark.svg";
-import LightMoon from "./moon-light.svg";
+import Icon from "./moonIcon.svg";
 
-const lightSwitch = (props) => {
+const LightSwitch = (props) => {
   return (
-    <TouchableOpacity onPress={props.toggle} style={styles.icon}>
-      {props.lightOff ? (
-        <LightMoon width={50} height={50} />
-      ) : (
-        <DarkMoon width={50} height={50} />
-      )}
+    <TouchableOpacity
+      testID="lightSwitchTouchable"
+      onPress={props.toggle}
+      style={styles.icon}
+    >
+      <Icon
+        testID="lightIcon"
+        width={50}
+        height={50}
+        fill={props.lightOff ? "#ffffff" : "#000000"}
+      />
     </TouchableOpacity>
   );
 };
@@ -23,4 +27,4 @@ const styles = StyleSheet.create({
     padding: 20,
   },
 });
-export default lightSwitch;
+export default LightSwitch;
