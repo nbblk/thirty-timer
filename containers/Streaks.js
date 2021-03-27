@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { SafeAreaView, Text, TextInput, StyleSheet } from "react-native";
 import { useHistory } from "react-router";
+import HideWithKeyboard from "react-native-hide-with-keyboard";
 
 import DefaultButton from "../components/DefaultButton";
 
@@ -50,8 +51,10 @@ const Streaks = (props) => {
         textAlign="center"
         textAlignVertical="center"
       />
-      <DefaultButton value="Add" press={addTaskHandler} />
-      <DefaultButton value="Go back" press={() => history.go(-1)} />
+      <HideWithKeyboard>
+        <DefaultButton value="Add" press={addTaskHandler} />
+        <DefaultButton value="Go back" press={() => history.go(-1)} />
+      </HideWithKeyboard>
     </SafeAreaView>
   );
 };
