@@ -1,8 +1,12 @@
-import React from "react";
+import React, { useContext } from "react";
 import { TouchableOpacity, StyleSheet } from "react-native";
+
+import lightContext from "../../hooks/lightContext";
 import Icon from "./moonIcon.svg";
 
 const LightSwitch = (props) => {
+  const lightOff = useContext(lightContext);
+
   return (
     <TouchableOpacity
       testID="lightSwitchTouchable"
@@ -13,7 +17,7 @@ const LightSwitch = (props) => {
         testID="lightIcon"
         width={50}
         height={50}
-        fill={props.lightOff ? "#ffffff" : "#000000"}
+        fill={lightOff ? "#ffffff" : "#000000"}
       />
     </TouchableOpacity>
   );
