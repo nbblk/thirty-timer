@@ -1,11 +1,14 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { SafeAreaView, Text, TextInput, StyleSheet } from "react-native";
 import { useHistory } from "react-router";
 import HideWithKeyboard from "react-native-hide-with-keyboard";
 
+import lightContext from "../hooks/lightContext";
+import { globalStyles } from "../styles/global";
 import DefaultButton from "../components/DefaultButton";
 
 const Streaks = (props) => {
+  const lightOff = useContext(lightContext);
   const history = useHistory();
   const [task, setTask] = useState({
     title: "",
@@ -29,9 +32,34 @@ const Streaks = (props) => {
     setTask({ ...task, added: true });
   };
 
+  const styles = StyleSheet.create({
+    ...globalStyles,
+    text: {
+      fontSize: 20,
+    },
+    inputText: {
+      height: 40,
+      width: 200,
+      margin: 20,
+      borderWidth: 1,
+      borderColor: "transparent",
+      borderBottomColor: lightOff ? "white" : "black",
+    },
+    inputNumber: {
+      height: 40,
+      width: 100,
+      margin: 20,
+      borderWidth: 1,
+      borderColor: "transparent",
+      borderBottomColor: lightOff ? "white" : "black",
+    },
+  });
+
+  const light = lightOff ? styles.switchOff : styles.switchOn;
+
   return (
-    <SafeAreaView style={styles.container}>
-      <Text style={styles.text}>What to do</Text>
+    <SafeAreaView style={[styles.container, light]}>
+      <Text style={[styles.text, light]}>What to do</Text>
       <TextInput
         style={styles.inputText}
         value={task.title}
@@ -40,7 +68,7 @@ const Streaks = (props) => {
         textAlignVertical="center"
         autoFocus
       />
-      <Text style={styles.text}>Streaks</Text>
+      <Text style={[styles.text, light]}>Streaks</Text>
       <TextInput
         style={styles.inputNumber}
         keyboardType="numeric"
@@ -58,33 +86,5 @@ const Streaks = (props) => {
     </SafeAreaView>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    flexDirection: "column",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  text: {
-    fontSize: 20,
-  },
-  inputText: {
-    height: 40,
-    width: 200,
-    margin: 20,
-    borderWidth: 1,
-    borderColor: "#ffffff",
-    borderBottomColor: "black",
-  },
-  inputNumber: {
-    height: 40,
-    width: 100,
-    margin: 20,
-    borderWidth: 1,
-    borderColor: "#ffffff",
-    borderBottomColor: "black",
-  },
-});
 
 export default Streaks;

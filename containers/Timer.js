@@ -1,11 +1,15 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { View, Text, StyleSheet } from "react-native";
 import { useHistory } from "react-router-native";
 
+import lightContext from "../hooks/lightContext";
+import { globalStyles } from "../styles/global";
 import DefaultButton from "../components/DefaultButton";
-import Timer from "../components/Timer";
+import Clock from "../components/Clock";
 
-const Start = (props) => {
+const Timer = (props) => {
+  const lightOff = useContext(lightContext);
+
   const history = useHistory();
   const [timer, setTimer] = useState({
     minute: 30,
@@ -46,15 +50,15 @@ const Start = (props) => {
       });
     };
     // state from the new task
-    if (props.location.state) {
-      const task = props.location.state;
-      setTimer({
-        ...timer,
-        title: task.title,
-        streaks: task.streaks,
-        completedSession: task.completedSession,
-      });
-    }
+    // if (props.location.state) {
+    //   const task = props.location.state;
+    //   setTimer({
+    //     ...timer,
+    //     title: task.title,
+    //     streaks: task.streaks,
+    //     completedSession: task.completedSession,
+    //   });
+    // }
     if (!timer.stopped) {
       intervalId = setInterval(countdown, 1000);
     }
@@ -63,25 +67,30 @@ const Start = (props) => {
 
   const timerHandler = () => setTimer({ ...timer, stopped: !timer.stopped });
 
+  const light = lightOff ? styles.switchOff : styles.switchOn;
+  console.log(light);
   return (
-    <View style={styles.container} testID="startView">
+    <View style={[styles.container, light]} testID="timerView">
       {timer.finished ? (
-        <Text style={styles.timerText} testID="finishedText">
+        <Text style={light} testID="finishedText">
           You did it! Let's take a break
         </Text>
       ) : (
-        <Timer
+        <Clock
+          style={light}
           testID="timer"
           minute={timer.minute}
           second={timer.second < 10 ? "0" + timer.second : timer.second}
         />
       )}
       <DefaultButton
+        style={light}
         testID="handleTimerBtn"
         value={timer.stopped ? "Start" : "Pause"}
         press={() => timerHandler()}
       />
       <DefaultButton
+        style={light}
         testID="giveupBtn"
         value="Give up"
         press={() => history.go(-1)}
@@ -91,12 +100,7 @@ const Start = (props) => {
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    flexDirection: "column",
-    justifyContent: "center",
-    alignItems: "center",
-  },
+  ...globalStyles,
 });
 
-export default Start;
+export default Timer;

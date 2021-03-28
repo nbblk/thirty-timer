@@ -3,58 +3,30 @@ import { View, Text, StyleSheet } from "react-native";
 import { Link } from "react-router-native";
 
 import lightContext from "../hooks/lightContext";
+import { globalStyles } from "../styles/global";
 import Logo from "./Logo";
 
 const home = (props) => {
   const lightOff = useContext(lightContext);
-
+  const light = lightOff ? styles.switchOff : styles.switchOn;
   return (
-    <View
-      style={[styles.container, lightOff ? styles.switchOff : styles.switchOn]}
-    >
-      <Logo style={[lightOff ? styles.switchOff : styles.switchOn]} />
-      <Link to="/start">
-        <Text
-          style={[
-            styles.buttons,
-            lightOff ? styles.switchOff : styles.switchOn,
-          ]}
-        >
-          Start
-        </Text>
+    <View style={[styles.container, light]}>
+      <Logo style={light} />
+      <Link to="/timer">
+        <Text style={[styles.buttons, light]}>Start</Text>
       </Link>
       <Link to="/streaks">
-        <Text
-          style={[
-            styles.buttons,
-            lightOff ? styles.switchOff : styles.switchOn,
-          ]}
-        >
-          Streaks
-        </Text>
+        <Text style={[styles.buttons, light]}>Streaks</Text>
       </Link>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    flexDirection: "column",
-    alignItems: "center",
-    justifyContent: "center",
-  },
+  ...globalStyles,
   buttons: {
     fontSize: 20,
     margin: 15,
-  },
-  switchOn: {
-    backgroundColor: "#ffffff",
-    color: "#000000",
-  },
-  switchOff: {
-    backgroundColor: "#000000",
-    color: "#ffffff",
   },
 });
 
