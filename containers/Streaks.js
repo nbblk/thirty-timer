@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useContext } from "react";
 import { SafeAreaView, Text, TextInput, StyleSheet } from "react-native";
-import { useHistory } from "react-router";
+import { useHistory } from "react-router-native";
 import HideWithKeyboard from "react-native-hide-with-keyboard";
 
 import lightContext from "../hooks/lightContext";
@@ -12,24 +12,16 @@ const Streaks = (props) => {
   const history = useHistory();
   const [task, setTask] = useState({
     title: "",
-    added: false,
     streaks: 0,
     completedSession: 0,
   });
 
-  useEffect(() => {
-    if (task.added) {
-      history.push("/start", {
-        title: task.title,
-        streaks: task.streaks,
-        completedSession: task.completedSession,
-      });
-    }
-  }, [task]);
-
   const addTaskHandler = () => {
-    console.log("add clicked");
-    setTask({ ...task, added: true });
+    history.replace("/timer", {
+      title: task.title,
+      streaks: task.streaks,
+      completedSession: task.completedSession,
+    });
   };
 
   const styles = StyleSheet.create({
