@@ -1,10 +1,10 @@
-import React, { useState, useContext } from "react";
+import React from "react";
 import { AppRegistry } from "react-native";
 import { NativeRouter, Route } from "react-router-native";
 
 import lightContext, { updateLight } from "./hooks/lightContext";
 import Home from "./components/Home";
-import Start from "./containers/Start";
+import Timer from "./containers/Timer";
 import Streaks from "./containers/Streaks";
 import LightSwitch from "./components/Icons/LightSwitch";
 
@@ -14,7 +14,7 @@ export default function App() {
     <NativeRouter>
       <lightContext.Provider value={lightOff}>
         <Route exact path="/" component={Home} />
-        <Route path="/start" component={Start} />
+        <Route path="/timer" component={Timer} />
         <Route path="/streaks" component={Streaks} />
         <LightSwitch toggle={pressHandler} />
       </lightContext.Provider>
