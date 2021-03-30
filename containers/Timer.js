@@ -11,17 +11,17 @@ import Clock from "../components/Clock";
 const Timer = (props) => {
   const lightOff = useContext(lightContext);
   const history = useHistory();
+  const task = props.location.state ? props.location.state : {};
   const [timer, setTimer] = useState({
     minute: 30,
     second: 60,
     stopped: true,
     finished: false,
-    title: props.location.state ? props.location.state.title : "",
-    streaks: props.location.state ? props.location.state.streaks : 0,
-    completedSession: props.location.state
-      ? props.location.state.completedSession
-      : 0,
+    title: task.title ? task.title : "",
+    streaks: task.streaks ? task.streaks : 0,
+    completedSession: task.completedSession ? task.completedSession : 0,
   });
+  const light = lightOff ? styles.switchOff : styles.switchOn;
 
   useEffect(() => {
     let intervalId = null;
@@ -60,15 +60,49 @@ const Timer = (props) => {
 
   const timerHandler = () => setTimer({ ...timer, stopped: !timer.stopped });
 
-  const light = lightOff ? styles.switchOff : styles.switchOn;
-  return (
-    <View testID="timerView" style={[styles.container, light]}>
-      {timer.finished ? (
-        <Text style={light} testID="finishedText">
-          You did it! Let's take a break
+  const allStreaksFinished = () => {
+    return (
+      <View>
+        <Text testID="allStreaksFinishedText" style={light}>
+          Well done! Do you want to continue with a new task?
         </Text>
-      ) : (
-        <View>
+        <DefaultButton
+          value="Hell yes!"
+          press={() => history.replace("/streaks")}
+        />
+        <DefaultButton
+          value="Nah I'm tired"
+          press={() => history.go("/report")}
+        />
+      </View>
+    );
+  };
+
+  const notFinishedYet = () => {
+    let elements = null;
+    if (timer.finished) {
+      elements = (
+        <View style={[styles.container, light]}>
+          <Text style={light} testID="finishedText">
+            You did it! Let's take a break
+          </Text>{" "}
+          <DefaultButton
+            testID="continueBtn"
+            style={light}
+            value={timer.stopped ? "Start" : "Pause"}
+            press={() => timerHandler()}
+          />
+          <DefaultButton
+            testID="giveupBtn"
+            style={light}
+            value="Give up"
+            press={() => history.replace("/")}
+          />
+        </View>
+      );
+    } else {
+      elements = (
+        <View style={[styles.container, light]}>
           {timer.streaks > 0 ? (
             <Status streaks={timer.streaks} taskTitle={timer.title} />
           ) : null}
@@ -78,20 +112,29 @@ const Timer = (props) => {
             minute={timer.minute}
             second={timer.second < 10 ? "0" + timer.second : timer.second}
           />
+          <DefaultButton
+            testID="handleTimerBtn"
+            style={light}
+            value={timer.stopped ? "Start" : "Pause"}
+            press={() => timerHandler()}
+          />
+          <DefaultButton
+            testID="giveupBtn"
+            style={light}
+            value="Give up"
+            press={() => history.replace("/")}
+          />
         </View>
-      )}
-      <DefaultButton
-        testID="handleTimerBtn"
-        style={light}
-        value={timer.stopped ? "Start" : "Pause"}
-        press={() => timerHandler()}
-      />
-      <DefaultButton
-        testID="giveupBtn"
-        style={light}
-        value="Give up"
-        press={() => history.go(-1)}
-      />
+      );
+    }
+    return elements;
+  };
+
+  return (
+    <View testID="timerView" style={[styles.container, light]}>
+      {timer.streaks === 0 && timer.finished
+        ? allStreaksFinished()
+        : notFinishedYet()}
     </View>
   );
 };

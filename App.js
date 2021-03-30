@@ -6,6 +6,7 @@ import lightContext, { updateLight } from "./hooks/lightContext";
 import Home from "./components/Home";
 import Timer from "./containers/Timer";
 import Streaks from "./containers/Streaks";
+import Report from "./components/Report";
 import LightSwitch from "./components/Icons/LightSwitch";
 
 export default function App() {
@@ -16,6 +17,18 @@ export default function App() {
         <Route exact path="/" component={Home} />
         <Route path="/timer" component={Timer} />
         <Route path="/streaks" component={Streaks} />
+        <Route
+          path="/report"
+          render={() => (
+            <Total
+              completedSession={5}
+              completedTasks={[
+                { title: "meditation", streaks: 2 },
+                { title: "math", streaks: 3 },
+              ]}
+            />
+          )}
+        />
         <LightSwitch toggle={pressHandler} />
       </lightContext.Provider>
     </NativeRouter>
