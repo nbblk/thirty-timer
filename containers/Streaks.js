@@ -13,14 +13,12 @@ const Streaks = (props) => {
   const [task, setTask] = useState({
     title: "",
     streaks: 0,
-    completedSession: 0,
   });
 
   const addTaskHandler = () => {
     history.replace("/timer", {
       title: task.title,
       streaks: task.streaks,
-      completedSession: task.completedSession,
     });
   };
 

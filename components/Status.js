@@ -16,11 +16,10 @@ const status = (props) => {
         key={i}
         width={20}
         height={20}
-        fill={lightOff ? "#ffffff" : "#000000"}
+        fill={lightOff ? "white" : "black"}
       />
     );
   }
-
   return (
     <View style={styles.statusContainer} testID="statusView">
       <View style={styles.icons}>{icons}</View>
@@ -40,9 +39,7 @@ const status = (props) => {
 const styles = StyleSheet.create({
   ...globalStyles,
   statusContainer: {
-    alignItems: "center",
-    position: "absolute",
-    top: -110,
+    top: -70,
   },
   icons: {
     flexDirection: "row",

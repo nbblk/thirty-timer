@@ -3,6 +3,7 @@ import { View, Text, StyleSheet } from "react-native";
 import { useHistory } from "react-router-native";
 
 import lightContext from "../hooks/lightContext";
+import sessionContext from "../hooks/sessionContext";
 import { globalStyles } from "../styles/global";
 import DefaultButton from "../components/DefaultButton";
 import Status from "../components/Status";
@@ -10,6 +11,7 @@ import Clock from "../components/Clock";
 
 const Timer = (props) => {
   const lightOff = useContext(lightContext);
+  const { updateCompletedSessionData } = useContext(sessionContext);
   const history = useHistory();
   const task = props.location.state ? props.location.state : {};
   const [timer, setTimer] = useState({
@@ -19,7 +21,6 @@ const Timer = (props) => {
     finished: false,
     title: task.title ? task.title : "",
     streaks: task.streaks ? task.streaks : 0,
-    completedSession: task.completedSession ? task.completedSession : 0,
   });
   const light = lightOff ? styles.switchOff : styles.switchOn;
 
@@ -61,6 +62,7 @@ const Timer = (props) => {
   const timerHandler = () => setTimer({ ...timer, stopped: !timer.stopped });
 
   const allStreaksFinished = () => {
+    updateCompletedSessionData({ title: timer.title, streaks: timer.streaks });
     return (
       <View>
         <Text testID="allStreaksFinishedText" style={light}>
@@ -81,6 +83,7 @@ const Timer = (props) => {
   const notFinishedYet = () => {
     let elements = null;
     if (timer.finished) {
+      setTimer({ ...timer, streaks: timer.streaks - 1 });
       elements = (
         <View style={[styles.container, light]}>
           <Text style={light} testID="finishedText">

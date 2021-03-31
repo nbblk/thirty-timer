@@ -19,13 +19,14 @@ const report = (props) => {
   }
 
   return (
-    <View testID="totalView" style={[styles.totalContainer, light]}>
+    <View testID="reportView" style={[styles.totalContainer, light]}>
       <View testID="sessionCount" style={styles.icons}>
         {icons.length > 0 ? icons : null}
       </View>
       <Text style={[light, styles.mainText]}>You've done</Text>
       <Text testID="streakCount" style={[light, styles.mainText]}>
-        30 x {props.completedTasks.length}
+        30 x{" "}
+        {props.completedTasks.reduce((prev, cur) => prev.streaks + cur.streaks)}
       </Text>
       <Text style={[light, styles.mainText]}>streaks in a total.</Text>
       <View testID="taskList" style={styles.taskContainer}>
