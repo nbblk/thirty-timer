@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useState, useContext } from "react";
 import { SafeAreaView, Text, TextInput, StyleSheet } from "react-native";
 import { useHistory } from "react-router-native";
 import HideWithKeyboard from "react-native-hide-with-keyboard";
@@ -26,11 +26,13 @@ const Streaks = (props) => {
     ...globalStyles,
     text: {
       fontSize: 15,
+      margin: 50,
     },
     inputText: {
       height: 40,
       width: 200,
-      marginBottom: 50,
+      fontFamily: "PressStart2P",
+      color: lightOff ? "white" : "black",
       borderWidth: 1,
       borderColor: "transparent",
       borderBottomColor: lightOff ? "white" : "black",
@@ -39,7 +41,9 @@ const Streaks = (props) => {
     inputNumber: {
       height: 40,
       width: 100,
-      margin: 20,
+      marginBottom: 20,
+      fontFamily: "PressStart2P",
+      color: lightOff ? "white" : "black",
       borderWidth: 1,
       borderColor: "transparent",
       borderBottomColor: lightOff ? "white" : "black",
@@ -50,7 +54,10 @@ const Streaks = (props) => {
   const light = lightOff ? styles.switchOff : styles.switchOn;
 
   return (
-    <SafeAreaView style={[styles.container, light]}>
+    <SafeAreaView
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      style={[styles.container, light]}
+    >
       <Text style={[styles.font, styles.text, light]}>What to do</Text>
       <TextInput
         style={styles.inputText}
