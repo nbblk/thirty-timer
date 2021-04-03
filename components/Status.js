@@ -25,6 +25,7 @@ const status = (props) => {
       <View style={styles.icons}>{icons}</View>
       <Text
         style={[
+          styles.font,
           styles.taskTitle,
           lightOff ? styles.switchOff : styles.switchOn,
         ]}
@@ -43,9 +44,10 @@ const styles = StyleSheet.create({
   },
   icons: {
     flexDirection: "row",
+    justifyContent: "center",
   },
   taskTitle: {
-    fontSize: 20,
+    fontSize: 12,
     textAlign: "center",
     margin: 10,
   },

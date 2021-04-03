@@ -23,16 +23,18 @@ const report = (props) => {
       <View testID="sessionCount" style={styles.icons}>
         {icons.length > 0 ? icons : null}
       </View>
-      <Text style={[light, styles.mainText]}>You've done</Text>
-      <Text testID="streakCount" style={[light, styles.mainText]}>
+      <Text style={[light, styles.font, styles.mainText]}>You've done</Text>
+      <Text testID="streakCount" style={[light, styles.font, styles.mainText]}>
         30 x{" "}
         {props.completedTasks.reduce((prev, cur) => prev.streaks + cur.streaks)}
       </Text>
-      <Text style={[light, styles.mainText]}>streaks in a total.</Text>
+      <Text style={[light, styles.font, styles.mainText]}>
+        streaks in a total.
+      </Text>
       <View testID="taskList" style={styles.taskContainer}>
         {props.completedTasks.map((task, index) => {
           return (
-            <Text key={index} style={[light, styles.subText]}>
+            <Text key={index} style={[light, styles.font, styles.subText]}>
               {task.title} x {task.streaks}
             </Text>
           );
@@ -40,13 +42,13 @@ const report = (props) => {
       </View>
       <DefaultButton
         testID="addBtn"
-        style={[light]}
+        style={[styles.font, light]}
         value="Add a task"
         press={() => history.replace("/streaks")}
       />
       <DefaultButton
         testID="goHomeBtn"
-        style={[light]}
+        style={[styles.font, light]}
         value="End session"
         press={() => history.replace("/")}
       />

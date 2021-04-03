@@ -25,15 +25,16 @@ const Streaks = (props) => {
   const styles = StyleSheet.create({
     ...globalStyles,
     text: {
-      fontSize: 20,
+      fontSize: 15,
     },
     inputText: {
       height: 40,
       width: 200,
-      margin: 20,
+      marginBottom: 50,
       borderWidth: 1,
       borderColor: "transparent",
       borderBottomColor: lightOff ? "white" : "black",
+      borderBottomWidth: 2,
     },
     inputNumber: {
       height: 40,
@@ -42,6 +43,7 @@ const Streaks = (props) => {
       borderWidth: 1,
       borderColor: "transparent",
       borderBottomColor: lightOff ? "white" : "black",
+      borderBottomWidth: 2,
     },
   });
 
@@ -49,7 +51,7 @@ const Streaks = (props) => {
 
   return (
     <SafeAreaView style={[styles.container, light]}>
-      <Text style={[styles.text, light]}>What to do</Text>
+      <Text style={[styles.font, styles.text, light]}>What to do</Text>
       <TextInput
         style={styles.inputText}
         value={task.title}
@@ -58,7 +60,7 @@ const Streaks = (props) => {
         textAlignVertical="center"
         autoFocus
       />
-      <Text style={[styles.text, light]}>Streaks</Text>
+      <Text style={[styles.font, styles.text, light]}>Streaks</Text>
       <TextInput
         style={styles.inputNumber}
         keyboardType="numeric"

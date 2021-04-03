@@ -1,27 +1,32 @@
 import React from "react";
 import { TouchableOpacity, Text, StyleSheet } from "react-native";
+import { globalStyles } from "../styles/global";
 
-const DefaultButton = (props) => {
+const defaultButton = (props) => {
   return (
-    <TouchableOpacity style={style.container} onPress={props.press}>
-      <Text style={[props.style, style.buttonText]} testID={props.testID}>
+    <TouchableOpacity style={[styles.container]} onPress={props.press}>
+      <Text
+        style={[props.style, styles.font, styles.buttonText]}
+        testID={props.testID}
+      >
         {props.value}
       </Text>
     </TouchableOpacity>
   );
 };
 
-const style = StyleSheet.create({
+const styles = StyleSheet.create({
+  ...globalStyles,
   container: {
     backgroundColor: "transparent",
   },
   buttonText: {
-    margin: 10,
+    margin: 20,
     fontSize: 20,
-    padding: 15,
+    padding: 10,
     width: 200,
     textAlign: "center",
   },
 });
 
-export default DefaultButton;
+export default defaultButton;

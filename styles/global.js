@@ -15,4 +15,7 @@ export const globalStyles = StyleSheet.create({
     backgroundColor: "#000000",
     color: "#ffffff",
   },
+  font: {
+    fontFamily: "PressStart2P",
+  },
 });

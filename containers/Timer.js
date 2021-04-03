@@ -65,7 +65,7 @@ const Timer = (props) => {
     updateCompletedSessionData({ title: timer.title, streaks: timer.streaks });
     return (
       <View>
-        <Text testID="allStreaksFinishedText" style={light}>
+        <Text testID="allStreaksFinishedText" style={[styles.font, light]}>
           Well done! Do you want to continue with a new task?
         </Text>
         <DefaultButton
@@ -86,18 +86,18 @@ const Timer = (props) => {
       setTimer({ ...timer, streaks: timer.streaks - 1 });
       elements = (
         <View style={[styles.container, light]}>
-          <Text style={light} testID="finishedText">
+          <Text style={[styles.font, light]} testID="finishedText">
             You did it! Let's take a break
           </Text>{" "}
           <DefaultButton
             testID="continueBtn"
-            style={light}
+            style={[styles.font, light]}
             value={timer.stopped ? "Start" : "Pause"}
             press={() => timerHandler()}
           />
           <DefaultButton
             testID="giveupBtn"
-            style={light}
+            style={[styles.font, light]}
             value="Give up"
             press={() => history.replace("/")}
           />
@@ -111,19 +111,19 @@ const Timer = (props) => {
           ) : null}
           <Clock
             testID="timer"
-            style={light}
+            style={[styles.font, light]}
             minute={timer.minute}
             second={timer.second < 10 ? "0" + timer.second : timer.second}
           />
           <DefaultButton
             testID="handleTimerBtn"
-            style={light}
+            style={[styles.font, light]}
             value={timer.stopped ? "Start" : "Pause"}
             press={() => timerHandler()}
           />
           <DefaultButton
             testID="giveupBtn"
-            style={light}
+            style={[styles.font, light]}
             value="Give up"
             press={() => history.replace("/")}
           />

@@ -11,12 +11,12 @@ const home = (props) => {
   const light = lightOff ? styles.switchOff : styles.switchOn;
   return (
     <View style={[styles.container, light]}>
-      <Logo style={light} />
+      <Logo style={[styles.font, styles.logo, light]} />
       <Link to="/timer">
-        <Text style={[styles.buttons, light]}>Start</Text>
+        <Text style={[styles.buttons, styles.font, light]}>Start</Text>
       </Link>
       <Link to="/streaks">
-        <Text style={[styles.buttons, light]}>Streaks</Text>
+        <Text style={[styles.buttons, styles.font, light]}>Streaks</Text>
       </Link>
     </View>
   );
@@ -24,9 +24,13 @@ const home = (props) => {
 
 const styles = StyleSheet.create({
   ...globalStyles,
+  logo: {
+    fontSize: 50,
+    marginBottom: 100,
+  },
   buttons: {
     fontSize: 20,
-    margin: 15,
+    margin: 20,
   },
 });
 
