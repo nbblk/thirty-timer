@@ -2,9 +2,11 @@ import React, { useState, useContext } from "react";
 import { SafeAreaView, Text, TextInput, StyleSheet } from "react-native";
 import { useHistory } from "react-router-native";
 import HideWithKeyboard from "react-native-hide-with-keyboard";
+import PropTypes from "prop-types";
 
 import lightContext from "../hooks/lightContext";
 import { globalStyles } from "../styles/global";
+import DismissKeyboard from "../components/utils/dismissKeyboard";
 import DefaultButton from "../components/DefaultButton";
 
 const Streaks = (props) => {
@@ -26,7 +28,8 @@ const Streaks = (props) => {
     ...globalStyles,
     text: {
       fontSize: 15,
-      margin: 50,
+      marginTop: 50,
+      marginBottom: 10,
     },
     inputText: {
       height: 40,
@@ -41,7 +44,7 @@ const Streaks = (props) => {
     inputNumber: {
       height: 40,
       width: 100,
-      marginBottom: 20,
+      marginBottom: 100,
       fontFamily: "PressStart2P",
       color: lightOff ? "white" : "black",
       borderWidth: 1,
@@ -54,36 +57,52 @@ const Streaks = (props) => {
   const light = lightOff ? styles.switchOff : styles.switchOn;
 
   return (
-    <SafeAreaView
-      behavior={Platform.OS === "ios" ? "padding" : "height"}
-      style={[styles.container, light]}
-    >
-      <Text style={[styles.font, styles.text, light]}>What to do</Text>
-      <TextInput
-        style={styles.inputText}
-        value={task.title}
-        onChangeText={(value) => setTask({ ...task, title: value })}
-        textAlign="center"
-        textAlignVertical="center"
-        autoFocus
-      />
-      <Text style={[styles.font, styles.text, light]}>Streaks</Text>
-      <TextInput
-        style={styles.inputNumber}
-        keyboardType="numeric"
-        value={task.streaks.toString()}
-        onChangeText={(value) => setTask({ ...task, streaks: value })}
-        placeholder="1-10"
-        defaultValue="1"
-        textAlign="center"
-        textAlignVertical="center"
-      />
-      <HideWithKeyboard>
-        <DefaultButton value="Add" press={addTaskHandler} />
-        <DefaultButton value="Go back" press={() => history.go(-1)} />
-      </HideWithKeyboard>
-    </SafeAreaView>
+    <DismissKeyboard>
+      <SafeAreaView
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        style={[styles.container, light]}
+      >
+        <Text style={[styles.font, styles.text, light]}>What to do</Text>
+        <TextInput
+          style={styles.inputText}
+          value={task.title}
+          onChangeText={(value) => setTask({ ...task, title: value })}
+          textAlign="center"
+          textAlignVertical="center"
+          autoFocus
+        />
+        <Text style={[styles.font, styles.text, light]}>Streaks</Text>
+        <TextInput
+          style={styles.inputNumber}
+          keyboardType="numeric"
+          value={task.streaks.toString()}
+          onChangeText={(value) => setTask({ ...task, streaks: value })}
+          placeholder="1-10"
+          defaultValue="1"
+          textAlign="center"
+          textAlignVertical="center"
+        />
+        <HideWithKeyboard>
+          <DefaultButton value="Add" style={light} press={addTaskHandler} />
+          <DefaultButton
+            value="Go back"
+            style={light}
+            press={() => history.go(-1)}
+          />
+        </HideWithKeyboard>
+      </SafeAreaView>
+    </DismissKeyboard>
   );
+};
+
+Streaks.defaultValue = {
+  title: "",
+  streaks: 0,
+};
+
+Streaks.propTypes = {
+  title: PropTypes.string.isRequired,
+  streaks: PropTypes.number.isRequired,
 };
 
 export default Streaks;
