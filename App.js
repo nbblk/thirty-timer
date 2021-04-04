@@ -54,10 +54,4 @@ export default function App() {
   }
 }
 
-const styles = StyleSheet.create({
-  container: {
-    fontFamily: "PressStart2P",
-  },
-});
-
 AppRegistry.registerComponent("MyApp", () => App);

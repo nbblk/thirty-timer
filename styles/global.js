@@ -7,6 +7,12 @@ export const globalStyles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
+  buttons: {
+    fontSize: 18,
+    margin: 20,
+    width: 200,
+    textAlign: "center",
+  },
   switchOn: {
     backgroundColor: "#ffffff",
     color: "#000000",
