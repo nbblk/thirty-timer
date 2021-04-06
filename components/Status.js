@@ -40,7 +40,8 @@ const status = (props) => {
 const styles = StyleSheet.create({
   ...globalStyles,
   statusContainer: {
-    top: -70,
+    position: "absolute",
+    top: 50,
   },
   icons: {
     flexDirection: "row",

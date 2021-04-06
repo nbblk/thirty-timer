@@ -1,6 +1,8 @@
 import React, { useEffect, useState, useContext } from "react";
 import { View, Text, StyleSheet } from "react-native";
 import { useHistory } from "react-router-native";
+import "react-native-get-random-values";
+import { v4 as uuidv4 } from "uuid";
 
 import lightContext from "../hooks/lightContext";
 import sessionContext from "../hooks/sessionContext";
@@ -8,11 +10,14 @@ import { globalStyles } from "../styles/global";
 import DefaultButton from "../components/DefaultButton";
 import Status from "../components/Status";
 import Clock from "../components/Clock";
+import moveToCenter from "../components/utils/moveToCenter";
+import moveToBottom from "../components/utils/moveToBottom";
 
 const Timer = (props) => {
   const lightOff = useContext(lightContext);
   const { updateCompletedSessionData } = useContext(sessionContext);
   const history = useHistory();
+
   const task = props.location.state ? props.location.state : {};
   const [timer, setTimer] = useState({
     minute: 30,
@@ -68,14 +73,20 @@ const Timer = (props) => {
         <Text testID="allStreaksFinishedText" style={[styles.font, light]}>
           Well done! Do you want to continue with a new task?
         </Text>
-        <DefaultButton
-          value="Hell yes!"
-          press={() => history.replace("/streaks")}
-        />
-        <DefaultButton
-          value="Nah I'm tired"
-          press={() => history.go("/report")}
-        />
+        {moveToBottom([
+          <DefaultButton
+            key={uuidv4()}
+            style={[light]}
+            value="Hell yes!"
+            press={() => history.replace("/streaks")}
+          />,
+          <DefaultButton
+            key={uuidv4()}
+            style={[light]}
+            value="Nah I'm tired"
+            press={() => history.go("/report")}
+          />,
+        ])}
       </View>
     );
   };
@@ -89,18 +100,22 @@ const Timer = (props) => {
           <Text style={[styles.font, light]} testID="finishedText">
             You did it! Let's take a break
           </Text>{" "}
-          <DefaultButton
-            testID="continueBtn"
-            style={[styles.font, light]}
-            value={timer.stopped ? "Start" : "Pause"}
-            press={() => timerHandler()}
-          />
-          <DefaultButton
-            testID="giveupBtn"
-            style={[styles.font, light]}
-            value="Give up"
-            press={() => history.replace("/")}
-          />
+          {moveToBottom([
+            <DefaultButton
+              key={uuidv4()}
+              testID="continueBtn"
+              style={[light]}
+              value={timer.stopped ? "Start" : "Pause"}
+              press={() => timerHandler()}
+            />,
+            <DefaultButton
+              key={uuidv4()}
+              testID="giveupBtn"
+              style={[light]}
+              value="Give up"
+              press={() => history.replace("/")}
+            />,
+          ])}
         </View>
       );
     } else {
@@ -109,24 +124,30 @@ const Timer = (props) => {
           {timer.streaks > 0 ? (
             <Status streaks={timer.streaks} taskTitle={timer.title} />
           ) : null}
-          <Clock
-            testID="timer"
-            style={[styles.font, light]}
-            minute={timer.minute}
-            second={timer.second < 10 ? "0" + timer.second : timer.second}
-          />
-          <DefaultButton
-            testID="handleTimerBtn"
-            style={[styles.font, light]}
-            value={timer.stopped ? "Start" : "Pause"}
-            press={() => timerHandler()}
-          />
-          <DefaultButton
-            testID="giveupBtn"
-            style={[styles.font, light]}
-            value="Give up"
-            press={() => history.replace("/")}
-          />
+          {moveToCenter(
+            <Clock
+              testID="timer"
+              style={[styles.font, styles.clock, light]}
+              minute={timer.minute}
+              second={timer.second < 10 ? "0" + timer.second : timer.second}
+            />
+          )}
+          {moveToBottom([
+            <DefaultButton
+              key={uuidv4()}
+              testID="handleTimerBtn"
+              style={[light]}
+              value={timer.stopped ? "Start" : "Pause"}
+              press={() => timerHandler()}
+            />,
+            <DefaultButton
+              key={uuidv4()}
+              testID="giveupBtn"
+              style={[light]}
+              value="Give up"
+              press={() => history.replace("/")}
+            />,
+          ])}
         </View>
       );
     }

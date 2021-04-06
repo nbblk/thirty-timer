@@ -1,11 +1,14 @@
 import React, { useContext } from "react";
 import { View, Text, StyleSheet } from "react-native";
 import { useHistory } from "react-router-native";
+import "react-native-get-random-values";
+import { v4 as uuidv4 } from "uuid";
 
 import lightContext from "../hooks/lightContext";
 import { globalStyles } from "../styles/global";
 import DiamondIcon from "../components/Icons/diamond.svg";
 import DefaultButton from "./DefaultButton";
+import moveToBottom from "./utils/moveToBottom";
 
 const report = (props) => {
   const lightOff = useContext(lightContext);
@@ -40,18 +43,22 @@ const report = (props) => {
           );
         })}
       </View>
-      <DefaultButton
-        testID="addBtn"
-        style={[styles.font, light]}
-        value="Add a task"
-        press={() => history.replace("/streaks")}
-      />
-      <DefaultButton
-        testID="goHomeBtn"
-        style={[styles.font, light]}
-        value="End session"
-        press={() => history.replace("/")}
-      />
+      {moveToBottom(
+        <DefaultButton
+          key={uuidv4()}
+          testID="addBtn"
+          style={[styles.font, light]}
+          value="Add a task"
+          press={() => history.replace("/streaks")}
+        />,
+        <DefaultButton
+          key={uuidv4()}
+          testID="goHomeBtn"
+          style={[styles.font, light]}
+          value="End session"
+          press={() => history.replace("/")}
+        />
+      )}
     </View>
   );
 };

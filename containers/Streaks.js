@@ -2,7 +2,6 @@ import React, { useState, useContext } from "react";
 import { SafeAreaView, Text, TextInput, StyleSheet } from "react-native";
 import { useHistory } from "react-router-native";
 import HideWithKeyboard from "react-native-hide-with-keyboard";
-import PropTypes from "prop-types";
 
 import lightContext from "../hooks/lightContext";
 import { globalStyles } from "../styles/global";
@@ -93,16 +92,6 @@ const Streaks = (props) => {
       </SafeAreaView>
     </DismissKeyboard>
   );
-};
-
-Streaks.defaultValue = {
-  title: "",
-  streaks: 0,
-};
-
-Streaks.propTypes = {
-  title: PropTypes.string.isRequired,
-  streaks: PropTypes.number.isRequired,
 };
 
 export default Streaks;
