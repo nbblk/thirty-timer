@@ -19,14 +19,16 @@ const home = (props) => {
   buttons.forEach((button, index) => {
     elements.push(
       <Link to={button.path} key={index}>
-        <Text style={[styles.buttons, styles.font, light]}>{button.value}</Text>
+        <Text testID="homeBtn" style={[styles.buttons, styles.font, light]}>
+          {button.value}
+        </Text>
       </Link>
     );
   });
 
   return (
-    <View style={[styles.container, light]}>
-      <Logo style={[styles.font, styles.logo, light]} />
+    <View testID="homeView" style={[styles.container, light]}>
+      <Logo testID="logo" style={[styles.font, styles.logo, light]} />
       {moveToBottom(elements)}
     </View>
   );
