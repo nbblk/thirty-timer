@@ -3,7 +3,7 @@ import { TouchableOpacity, Text, StyleSheet } from "react-native";
 
 import { globalStyles } from "../styles/global";
 
-import lightContext from "../hooks/lightContext";
+import lightContext from "../contexts/lightContext";
 
 const defaultButton = (props) => {
   const lightOff = useContext(lightContext);

@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import { TouchableOpacity, StyleSheet } from "react-native";
 
-import lightContext from "../../hooks/lightContext";
+import lightContext from "../../contexts/lightContext";
 import Icon from "./moonIcon.svg";
 
 const LightSwitch = (props) => {

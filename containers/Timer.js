@@ -1,11 +1,10 @@
 import React, { useEffect, useState, useContext } from "react";
 import { View, Text, StyleSheet } from "react-native";
-import { useHistory } from "react-router-native";
+import { useHistory, useLocation } from "react-router-native";
 import "react-native-get-random-values";
 import { v4 as uuidv4 } from "uuid";
 
-import lightContext from "../hooks/lightContext";
-import sessionContext from "../hooks/sessionContext";
+import lightContext from "../contexts/lightContext";
 import { globalStyles } from "../styles/global";
 import DefaultButton from "../components/DefaultButton";
 import Status from "../components/Status";
@@ -15,18 +14,20 @@ import moveToBottom from "../components/utils/moveToBottom";
 
 const Timer = (props) => {
   const lightOff = useContext(lightContext);
-  const { updateCompletedSessionData } = useContext(sessionContext);
   const history = useHistory();
+  const location = useLocation();
 
-  const task = props.location.state ? props.location.state : {};
+  const task = location ? location.state : null;
   const [timer, setTimer] = useState({
-    minute: 30,
-    second: 60,
+    minute: 0, // 30
+    second: 5, // 60
     stopped: true,
     finished: false,
-    title: task.title ? task.title : "",
-    streaks: task.streaks ? task.streaks : 0,
+    title: task ? task.title : "",
+    streaks: task ? task.streaks : 0,
+    streaksLeft: task ? task.streaks : 0,
   });
+
   const light = lightOff ? styles.switchOff : styles.switchOn;
 
   useEffect(() => {
@@ -35,12 +36,14 @@ const Timer = (props) => {
       setTimer((prev) => {
         if (prev.minute <= 0 && prev.second <= 0) {
           clearInterval(intervalId);
+
           return {
-            minute: 30,
-            second: 60,
+            ...prev,
+            minute: 0, // 30
+            second: 5, // 60
             stopped: true,
             finished: true,
-            streaks: timer.streaks != 0 ? timer.streaks - 1 : 0,
+            streaksLeft: timer.streaksLeft > 0 ? timer.streaksLeft - 1 : 0,
           };
         }
         if (prev.minute > 0 && prev.second === 0) {
@@ -53,26 +56,37 @@ const Timer = (props) => {
           return {
             ...prev,
             minute: prev.minute === 30 ? 29 : prev.minute,
-            second: prev.second <= 0 ? 0 : prev.second - 1,
+            second: prev.second <= 0 ? 59 : prev.second - 1,
           };
         }
       });
     };
+    if (timer.title && !timer.streaksLeft && timer.finished) {
+      console.log("to be updated...");
+      props.update({ title: timer.title, streaks: timer.streaks });
+    }
     if (!timer.stopped) {
       intervalId = setInterval(countdown, 1000);
     }
     return () => clearInterval(intervalId);
   }, [timer]);
 
-  const timerHandler = () => setTimer({ ...timer, stopped: !timer.stopped });
+  const restartHandler = () => {
+    setTimer({ ...timer, stopped: !timer.stopped, finished: false });
+  };
 
   const allStreaksFinished = () => {
-    updateCompletedSessionData({ title: timer.title, streaks: timer.streaks });
+    console.log("all streaks finished");
     return (
-      <View>
-        <Text testID="allStreaksFinishedText" style={[styles.font, light]}>
-          Well done! Do you want to continue with a new task?
-        </Text>
+      <View style={[styles.container]}>
+        {moveToCenter(
+          <Text
+            testID="allStreaksFinishedText"
+            style={[styles.font, light, styles.mainText]}
+          >
+            Well done! {"\n"} Do you want to continue with a new task?
+          </Text>
+        )}
         {moveToBottom([
           <DefaultButton
             key={uuidv4()}
@@ -84,7 +98,11 @@ const Timer = (props) => {
             key={uuidv4()}
             style={[light]}
             value="Nah I'm tired"
-            press={() => history.go("/report")}
+            press={() =>
+              props.session.streakMode
+                ? history.replace("/report")
+                : history.replace("/")
+            }
           />,
         ])}
       </View>
@@ -92,71 +110,53 @@ const Timer = (props) => {
   };
 
   const notFinishedYet = () => {
-    let elements = null;
-    if (timer.finished) {
-      setTimer({ ...timer, streaks: timer.streaks - 1 });
-      elements = (
-        <View style={[styles.container, light]}>
-          <Text style={[styles.font, light]} testID="finishedText">
-            You did it! Let's take a break
-          </Text>{" "}
-          {moveToBottom([
-            <DefaultButton
-              key={uuidv4()}
-              testID="continueBtn"
-              style={[light]}
-              value={timer.stopped ? "Start" : "Pause"}
-              press={() => timerHandler()}
-            />,
-            <DefaultButton
-              key={uuidv4()}
-              testID="giveupBtn"
-              style={[light]}
-              value="Give up"
-              press={() => history.replace("/")}
-            />,
-          ])}
-        </View>
-      );
-    } else {
-      elements = (
-        <View style={[styles.container, light]}>
-          {timer.streaks > 0 ? (
-            <Status streaks={timer.streaks} taskTitle={timer.title} />
-          ) : null}
-          {moveToCenter(
-            <Clock
-              testID="timer"
-              style={[styles.font, styles.clock, light]}
-              minute={timer.minute}
-              second={timer.second < 10 ? "0" + timer.second : timer.second}
-            />
-          )}
-          {moveToBottom([
-            <DefaultButton
-              key={uuidv4()}
-              testID="handleTimerBtn"
-              style={[light]}
-              value={timer.stopped ? "Start" : "Pause"}
-              press={() => timerHandler()}
-            />,
-            <DefaultButton
-              key={uuidv4()}
-              testID="giveupBtn"
-              style={[light]}
-              value="Give up"
-              press={() => history.replace("/")}
-            />,
-          ])}
-        </View>
-      );
-    }
-    return elements;
+    return (
+      <View style={[styles.container, light]}>
+        {timer.streaks ? (
+          <Status streaks={timer.streaksLeft} taskTitle={timer.title} />
+        ) : null}
+        {timer.finished
+          ? moveToCenter([
+              <Text
+                key={uuidv4()}
+                style={[styles.font, light, styles.mainText]}
+                testID="finishedText"
+              >
+                You did it!{"\n"} Let's take a break
+              </Text>,
+            ])
+          : moveToCenter([
+              <Clock
+                key={uuidv4()}
+                testID="timer"
+                style={[styles.font, styles.clock, light]}
+                minute={timer.minute < 10 ? "0" + timer.minute : timer.minute}
+                second={timer.second < 10 ? "0" + timer.second : timer.second}
+              />,
+            ])}
+        {moveToBottom([
+          <DefaultButton
+            key={uuidv4()}
+            testID="continueBtn"
+            style={[light]}
+            value={timer.stopped ? "Start" : "Pause"}
+            press={() => restartHandler()}
+          />,
+          <DefaultButton
+            key={uuidv4()}
+            testID="giveupBtn"
+            style={[light]}
+            value="Give up"
+            press={() => history.replace("/")}
+          />,
+        ])}
+      </View>
+    );
   };
 
   return (
     <View testID="timerView" style={[styles.container, light]}>
-      {timer.streaks === 0 && timer.finished
+      {timer.streaksLeft === 0 && timer.finished
         ? allStreaksFinished()
         : notFinishedYet()}
     </View>

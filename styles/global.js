@@ -7,10 +7,16 @@ export const globalStyles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
+  mainText: {
+    fontSize: 20,
+    flexWrap: "wrap",
+    textAlign: "center",
+    lineHeight: 40,
+  },
   buttons: {
     fontSize: 18,
     margin: 20,
-    width: 200,
+    width: 250,
     textAlign: "center",
   },
   switchOn: {

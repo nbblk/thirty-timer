@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import { View, Text, StyleSheet } from "react-native";
 
-import lightContext from "../hooks/lightContext";
+import lightContext from "../contexts/lightContext";
 import { globalStyles } from "../styles/global";
 import SquareIcon from "./Icons/square.svg";
 

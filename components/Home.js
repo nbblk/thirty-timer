@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import { View, Text, StyleSheet } from "react-native";
 import { Link } from "react-router-native";
 
-import lightContext from "../hooks/lightContext";
+import lightContext from "../contexts/lightContext";
 import { globalStyles } from "../styles/global";
 import Logo from "./Logo";
 import moveToBottom from "./utils/moveToBottom";

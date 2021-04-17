@@ -3,7 +3,7 @@ import { SafeAreaView, Text, TextInput, StyleSheet } from "react-native";
 import { useHistory } from "react-router-native";
 import HideWithKeyboard from "react-native-hide-with-keyboard";
 
-import lightContext from "../hooks/lightContext";
+import lightContext from "../contexts/lightContext";
 import { globalStyles } from "../styles/global";
 import DismissKeyboard from "../components/utils/dismissKeyboard";
 import DefaultButton from "../components/DefaultButton";

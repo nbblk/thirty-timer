@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { AppRegistry, Text, StyleSheet } from "react-native";
+import { AppRegistry } from "react-native";
+import { NativeRouter, Switch, Route } from "react-router-native";
 import AppLoading from "expo-app-loading";
-import { NativeRouter, Route } from "react-router-native";
 
-import lightContext, { updateLight } from "./hooks/lightContext";
-import sessionContext, { updateSession } from "./hooks/sessionContext";
+import lightContext, { updateLight } from "./contexts/lightContext";
 import Home from "./components/Home";
 import Timer from "./containers/Timer";
 import Streaks from "./containers/Streaks";
@@ -15,7 +14,12 @@ import * as Font from "expo-font";
 export default function App() {
   const [fontLoaded, setFontLoaded] = useState(false);
   const { lightOff, pressHandler } = updateLight();
-  const { session } = updateSession();
+
+  const [session, setSession] = useState({
+    streakMode: false,
+    completedSession: 0,
+    completedTasks: [],
+  });
 
   useEffect(() => {
     const loadFonts = async () => {
@@ -27,27 +31,52 @@ export default function App() {
     loadFonts();
   }, []);
 
+  const updateSession = (task) => {
+    console.log(task);
+    if (task) {
+      setSession({
+        streakMode: true,
+        completedSession: session.completedSession + 1,
+        completedTasks: [...session.completedTasks, task],
+      });
+    } else {
+      setSession({
+        ...session,
+        streakMode: false,
+      });
+    }
+  };
+
+  const resetSession = () =>
+    setSession({ streakMode: false, completedSession: 0, completedTasks: [] });
+
   if (!fontLoaded) {
     return <AppLoading onError={console.warn} />;
   } else {
+    console.log(session);
     return (
       <NativeRouter>
         <lightContext.Provider value={lightOff}>
-          <sessionContext.Provider value={session}>
+          <Switch>
             <Route exact path="/" component={Home} />
-            <Route path="/timer" component={Timer} />
+            <Route
+              path="/timer"
+              render={() => (
+                <Timer
+                  session={session}
+                  update={(task) => updateSession(task)}
+                />
+              )}
+            />
             <Route path="/streaks" component={Streaks} />
             <Route
               path="/report"
               render={() => (
-                <Report
-                  completedSession={session.completedSession}
-                  completedTasks={session.completedTasks}
-                />
+                <Report session={session} reset={() => resetSession()} />
               )}
             />
-            <LightSwitch toggle={pressHandler} />
-          </sessionContext.Provider>
+          </Switch>
+          <LightSwitch toggle={pressHandler} />
         </lightContext.Provider>
       </NativeRouter>
     );
