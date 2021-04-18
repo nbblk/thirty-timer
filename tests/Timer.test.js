@@ -2,15 +2,14 @@ import React from "react";
 import { render, fireEvent } from "@testing-library/react-native";
 
 import Timer from "../containers/Timer";
+import { wrapper } from "../__mocks__/wrapper";
 
-jest.mock("react-router-native", () => ({
-  useHistory: () => ({
-    go: jest.fn(),
-  }),
-}));
+function renderTimer(props) {
+  return render(<Timer />, wrapper);
+}
 
 test("it renders a timer and two buttons", async () => {
-  const { getByTestId } = render(<Timer />);
+  const { getByTestId } = renderTimer();
   const timer = getByTestId("timer");
   const handleTimerBtn = getByTestId("handleTimerBtn");
   const giveupBtn = getByTestId("giveupBtn");
@@ -21,7 +20,7 @@ test("it renders a timer and two buttons", async () => {
 });
 
 test("button's text changes when clicking", async () => {
-  const { getByTestId } = render(<Timer />);
+  const { getByTestId } = renderTimer();
   const handleTimerBtn = getByTestId("handleTimerBtn");
 
   await fireEvent(handleTimerBtn, "press");
@@ -32,7 +31,7 @@ test("button's text changes when clicking", async () => {
 });
 
 test("it has global styles", async () => {
-  const { getByTestId } = render(<Timer />);
+  const { getByTestId } = renderTimer();
 
   expect(getByTestId("timerView")).toHaveStyle({
     flex: 1,

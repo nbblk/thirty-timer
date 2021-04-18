@@ -5,16 +5,15 @@ import Logo from "../components/Logo";
 
 test("Logo renders", async () => {
   const { getByTestId } = render(
-    <Logo sharedStyle={{ fontFamily: "PressStart2P_400Regular" }} />
+    <Logo style={{ fontFamily: "PressStart2P" }} />
   );
   const logo = getByTestId("logo");
   expect(logo).toHaveTextContent("Thirty");
   expect(logo).toHaveStyle({
-    color: "black",
+    fontSize: 55,
+    marginTop: 250,
     justifyContent: "center",
     alignItems: "center",
-    fontSize: 80,
-    fontWeight: "800",
-    fontFamily: "PressStart2P_400Regular",
+    fontFamily: "PressStart2P",
   });
 });

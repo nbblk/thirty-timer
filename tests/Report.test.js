@@ -1,12 +1,7 @@
 import React from "react";
 import { render } from "@testing-library/react-native";
 import Report from "../components/Report";
-
-jest.mock("react-router-native", () => ({
-  useHistory: () => ({
-    go: jest.fn(),
-  }),
-}));
+import { wrapper } from "../__mocks__/wrapper";
 
 test("it renders tasks and total streaks", async () => {
   const tasks = [
@@ -14,7 +9,8 @@ test("it renders tasks and total streaks", async () => {
     { title: "workout", streaks: 1 },
   ];
   const { getByTestId } = render(
-    <Report completedTasks={tasks} completedSession={1} />
+    <Report session={{ completedTasks: tasks, completedSession: 1 }} />,
+    wrapper
   );
   const reportView = getByTestId("reportView");
   const sessionCount = getByTestId("sessionCount");
