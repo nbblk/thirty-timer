@@ -26,7 +26,6 @@ const report = (props) => {
   }
 
   let streaks = 0;
-  console.log(session.completedTasks);
   if (session.completedTasks.length == 1) {
     streaks = session.completedTasks[0].streaks;
   } else {

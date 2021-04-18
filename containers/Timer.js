@@ -16,19 +16,18 @@ const Timer = (props) => {
   const lightOff = useContext(lightContext);
   const history = useHistory();
   const location = useLocation();
-
   const task = location ? location.state : null;
+  const light = lightOff ? styles.switchOff : styles.switchOn;
+
   const [timer, setTimer] = useState({
-    minute: 0, // 30
-    second: 5, // 60
+    minute: 30,
+    second: 60,
     stopped: true,
     finished: false,
     title: task ? task.title : "",
     streaks: task ? task.streaks : 0,
     streaksLeft: task ? task.streaks : 0,
   });
-
-  const light = lightOff ? styles.switchOff : styles.switchOn;
 
   useEffect(() => {
     let intervalId = null;
@@ -39,8 +38,8 @@ const Timer = (props) => {
 
           return {
             ...prev,
-            minute: 0, // 30
-            second: 5, // 60
+            minute: 30,
+            second: 59,
             stopped: true,
             finished: true,
             streaksLeft: timer.streaksLeft > 0 ? timer.streaksLeft - 1 : 0,
@@ -50,19 +49,18 @@ const Timer = (props) => {
           return {
             ...prev,
             minute: prev.minute <= 0 ? 0 : prev.minute - 1,
-            second: 60,
+            second: 59,
           };
         } else {
           return {
             ...prev,
             minute: prev.minute === 30 ? 29 : prev.minute,
-            second: prev.second <= 0 ? 59 : prev.second - 1,
+            second: prev.second === 0 ? 59 : prev.second - 1,
           };
         }
       });
     };
     if (timer.title && !timer.streaksLeft && timer.finished) {
-      console.log("to be updated...");
       props.update({ title: timer.title, streaks: timer.streaks });
     }
     if (!timer.stopped) {
@@ -76,7 +74,6 @@ const Timer = (props) => {
   };
 
   const allStreaksFinished = () => {
-    console.log("all streaks finished");
     return (
       <View style={[styles.container]}>
         {moveToCenter(

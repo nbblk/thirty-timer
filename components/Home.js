@@ -28,7 +28,7 @@ const home = (props) => {
 
   return (
     <View testID="homeView" style={[styles.container, light]}>
-      <Logo testID="logo" style={[styles.font, styles.logo, light]} />
+      <Logo testID="logo" style={[styles.font, light]} />
       {moveToBottom(elements)}
     </View>
   );
@@ -36,10 +36,6 @@ const home = (props) => {
 
 const styles = StyleSheet.create({
   ...globalStyles,
-  logo: {
-    fontSize: 50,
-    marginTop: 250,
-  },
 });
 
 export default home;

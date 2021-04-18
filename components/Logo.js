@@ -1,20 +1,21 @@
 import React from "react";
+import { Text, StyleSheet } from "react-native";
 
-import { Text } from "react-native";
-
-const Logo = (props) => {
-  const style = {
-    color: "black",
-    justifyContent: "center",
-    alignItems: "center",
-    fontSize: 80,
-    fontWeight: "800",
-  };
+const logo = (props) => {
   return (
-    <Text style={[style, props.style]} testID="logo">
+    <Text style={[props.style, styles.logo]} testID="logo">
       Thirty
     </Text>
   );
 };
 
-export default Logo;
+const styles = StyleSheet.create({
+  logo: {
+    fontSize: 55,
+    marginTop: 250,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+});
+
+export default logo;
