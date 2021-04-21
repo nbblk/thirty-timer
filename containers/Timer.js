@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, Vibration } from "react-native";
 import { useHistory, useLocation } from "react-router-native";
 import "react-native-get-random-values";
 import { v4 as uuidv4 } from "uuid";
@@ -20,7 +20,7 @@ const Timer = (props) => {
   const light = lightOff ? styles.switchOff : styles.switchOn;
 
   const [timer, setTimer] = useState({
-    minute: 30,
+    minute: 1,
     second: 60,
     stopped: true,
     finished: false,
@@ -35,7 +35,7 @@ const Timer = (props) => {
       setTimer((prev) => {
         if (prev.minute <= 0 && prev.second <= 0) {
           clearInterval(intervalId);
-
+          Vibration.vibrate();
           return {
             ...prev,
             minute: 30,
