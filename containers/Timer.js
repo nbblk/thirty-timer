@@ -20,7 +20,7 @@ const Timer = (props) => {
   const light = lightOff ? styles.switchOff : styles.switchOn;
 
   const [timer, setTimer] = useState({
-    minute: 1,
+    minute: 30,
     second: 60,
     stopped: true,
     finished: false,

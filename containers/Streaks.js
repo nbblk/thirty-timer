@@ -75,7 +75,12 @@ const Streaks = (props) => {
           style={styles.inputNumber}
           keyboardType="numeric"
           value={task.streaks.toString()}
-          onChangeText={(value) => setTask({ ...task, streaks: value })}
+          onChangeText={(value) => {
+            if (Number(value) > 10) {
+              value = 10;
+            }
+            setTask({ ...task, streaks: value });
+          }}
           placeholder="1-10"
           defaultValue="1"
           textAlign="center"
